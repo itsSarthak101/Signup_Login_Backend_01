@@ -1,6 +1,15 @@
 const express = require('express')
 const app = express()
 
+const bodyparser = require('body-parser')
+const morgan = require('morgan')
+
+app.use(bodyparser.urlencoded( {extended: false} ))
+app.use(bodyparser.json())
+
+app.use(morgan('dev'))
+
+// Routes Handling
 const loginHandler = require('./api/routes/login')
 const signupHandler = require('./api/routes/signup')
 
