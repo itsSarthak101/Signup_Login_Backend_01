@@ -3,11 +3,21 @@ const app = express()
 
 const bodyparser = require('body-parser')
 const morgan = require('morgan')
+const mongoose = require('mongoose')
 
+// Using Body-Parser
 app.use(bodyparser.urlencoded( {extended: false} ))
 app.use(bodyparser.json())
 
+// Using Morgan
 app.use(morgan('dev'))
+
+// Using Mongoose
+mongoose.connect('mongodb+srv://Sarthak1202:sarthak1395mongodb@cluster0.omuy5ko.mongodb.net/SignUp_Login_Backend_01?retryWrites=true&w=majority')
+    .then(console.log('Connection Successful'))
+    .catch(err => console.log(err))
+
+// OR async () => await mongoose.connect('mongodb+srv://Sarthak1202:sarthak1395mongodb@cluster0.omuy5ko.mongodb.net/SignUp_Login_Backend_01?retryWrites=true&w=majority')
 
 // Routes Handling
 const loginHandler = require('./api/routes/login')

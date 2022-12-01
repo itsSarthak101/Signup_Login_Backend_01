@@ -6,8 +6,8 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-    const userEmail = req.body.userEmail
-    const userPassword = req.body.userPassword
+    const userEmail = req.body.email
+    const userPassword = req.body.password
 
     const userDetails = {
         email: userEmail,
