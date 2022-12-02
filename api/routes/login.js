@@ -1,5 +1,8 @@
 const express = require('express')
+const mongoose = require('mongoose')
 const router = express.Router()
+
+const Signup = require('../model/signup')
 
 
 // localhost:5001/users/login
@@ -9,17 +12,21 @@ router.get('/', (req, res) => {
 
 // localhost:5001/users/login/variableId
 router.get('/:variableId', (req, res) => {
-    const reqParam = req.params.variableId
+    const reqParams = req.params.variableId
     
-    res.status(200).json( {message: 'GET request to /users/login/${reqParams}'} )
+    res.status(200).json( {message: `GET request to /users/login/${reqParams}`} )
 })
 
 // POST request to the server
 router.post('/', (req, res) => {
-    const userId = req.body.userId
-    const userPassword = req.body.password
+    const Email = req.body.email
+    const Password = req.body.password
 
-    res.status(200).json( {message: 'POST request to /users/login', details: 'UserId: ${userId} and Password: ${userPassword}'} )
+    // Function to filter from the documents where the email matches the document.
+    Signup.find({email: Email})
+        // Datatype of this result will be an Array of object
+        .then(result => res.status(201).json( {message: "Records Found!", records: result} ))
+        .catch(err => res.status(500).json( {message: "Server Error!", records: err}) )
 })
 
 router.patch('/', (req, res) => {

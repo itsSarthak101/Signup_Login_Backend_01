@@ -1,19 +1,23 @@
 const express = require('express')
+const { default: mongoose } = require('mongoose')
 const router = express.Router()
+
+const Signup = require('../model/signup')
 
 router.get('/', (req, res) => {
     res.status(200).json( {message: 'GET request to /users/signup'} )
 })
 
 router.post('/', (req, res) => {
-    const userEmail = req.body.email
-    const userPassword = req.body.password
+    const newUser = new Signup({
+        _id: mongoose.Types.ObjectId(), 
+        email: req.body.email,
+        password: req.body.password
+    })
 
-    const userDetails = {
-        email: userEmail,
-        password: userPassword
-    }
-    res.status(201).json( {message: 'Signed-Up to the Server', details: userDetails} )
+    newUser.save()
+        .then(result => res.status(201).json( {message: "Signup Successful", details: result} ))
+        .catch(err => res.status(500).json( {message: "Server Encountered an Error", error: err} ))
 })
 
 router.patch('/', (req, res) => {
