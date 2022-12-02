@@ -25,7 +25,19 @@ router.post('/', (req, res) => {
     // Function to filter from the documents where the email matches the document.
     Signup.find({email: Email})
         // Datatype of this result will be an Array of object
-        .then(result => res.status(201).json( {message: "Records Found!", records: result} ))
+        .then(result => {
+            if(result.length === 0) {
+                res.status(400).json( {message: "Records Not Found", recourds: result} )
+            }
+            else {
+                if(Password === result[0].password) {
+                    res.status(200).json( {message: "Authorized User"} )
+                }
+                else {
+                    res.status(400).json( {message: "Unauthorized User!"} )
+                }
+            }
+        })
         .catch(err => res.status(500).json( {message: "Server Error!", records: err}) )
 })
 

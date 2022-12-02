@@ -14,7 +14,7 @@ router.post('/', (req, res) => {
         email: req.body.email,
         password: req.body.password
     })
-
+    // Check functionality where records of the users and check if the input email does not exist in the records
     newUser.save()
         .then(result => res.status(201).json( {message: "Signup Successful", details: result} ))
         .catch(err => res.status(500).json( {message: "Server Encountered an Error", error: err} ))
