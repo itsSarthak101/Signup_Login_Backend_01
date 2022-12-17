@@ -2,7 +2,10 @@ const express = require('express')
 const router = express.Router()
 
 router.get('/', (req, res) => {
-    res.status(200).json( {message: 'GET request to home. Welcome to the Home route!'} )
+    loggedinUser = req.session.user
+
+    req.session.destroy()
+    res.status(200).json( {message: "User Logged Out!"} )
 })
 
 module.exports = router;

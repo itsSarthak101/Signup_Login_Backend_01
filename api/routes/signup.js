@@ -1,4 +1,5 @@
 const express = require('express')
+const bcrypt = require('bcrypt')
 const { default: mongoose } = require('mongoose')
 const router = express.Router()
 
@@ -16,23 +17,29 @@ router.post('/', (req, res) => {
                 res.status(400).json( {message: "Email Already Exist"} )
             }
             else {
-                // Email doesn't exist
-                const newUser = new Signup({
-                    _id: mongoose.Types.ObjectId(), 
-                    email: req.body.email,
-                    password: req.body.password
-                })
-                // Check functionality where records of the users and check if the input email does not exist in the records
-                newUser.save()
-                    .then(result => res.status(201).json( {message: "Signup Successful", details: result} ))
-                    .catch(err => res.status(500).json( {message: "Server Encountered an Error", error: err} ))
+                const saltRounds = 10
+                bcrypt.hash(req.body.password, saltRounds)
+                    .then(result => {
+                        // Email doesn't exist
+                        const newUser = new Signup({
+                            _id: mongoose.Types.ObjectId(), 
+                            email: req.body.email,
+                            password: result
+                        })
+
+                        // Check functionality where records of the users and check if the input email does not exist in the records
+                        newUser.save()
+                            .then(result => res.status(201).json( {message: "Signup Successful", details: result} ))
+                            .catch(err => res.status(500).json( {message: "Server Encountered an Error", error: err} ))
+                            })
+                    .catch(err => res.status(500).json( {message: "error", error: err} ))
             }
         })
-        .catch(err => res.status(500).json( {message: "error", error: err} ))
+        .catch(err => res.status(500).json( {message: 'Server Error', error: err} ))
+        
 
     
 })
-
 router.patch('/', (req, res) => {
     // Edit passwords
     //if user exist, match with old password. if false then edit the password.

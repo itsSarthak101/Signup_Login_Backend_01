@@ -1,24 +1,23 @@
-console.log("Hello and welcome to the Integration");
-document.querySelector("#submit-btn").addEventListener('click', (e) => {
+document.querySelector('#submit-btn').addEventListener('click', (e) => {
     e.preventDefault()
 
-    const signup_email = document.querySelector('#email-inp').value 
-    const signup_password = doucment.querySelector('#password-inp').value
+    const email_input = document.querySelector('#email-input').value
+    const password_input = document.querySelector('#pwd-input').value
 
     const user = {
-        email: signup_email,
-        password: signup_password
+        email: email_input,
+        password: password_input
     }
 
-    // Ajax and Api call
+    // AJAX CALL
     const xhr = new XMLHttpRequest()
     const url = `http://localhost:5001/users/signup`
-    
+
     xhr.open('POST', url)
 
-    // Request header
-    xhr.setRequestHeader('Access-Control-Allow-Origin', '*')        // CORS error handler
-    xhr.setRequestHeader('Content-Tyoe', 'application/json')
+    // Set the request header
+    xhr.setRequestHeader('Access-Control-Allow-Origin', '*')
+    xhr.setRequestHeader('Content-Type', 'application/json')
 
     xhr.onreadystatechange = () => {
         if(xhr.status === 201 && xhr.readyState === 4) {
@@ -26,5 +25,5 @@ document.querySelector("#submit-btn").addEventListener('click', (e) => {
         }
     }
 
-    xhr.send(JSON.stringify(user))
+    xhr.send( JSON.stringify(user) )
 })
